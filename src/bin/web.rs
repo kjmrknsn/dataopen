@@ -1,3 +1,7 @@
+extern crate dataopen;
+
+use dataopen::web::server;
+
 fn main() {
-    println!("Hello, world!");
+    server::run();
 }
