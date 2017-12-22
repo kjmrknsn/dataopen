@@ -2,6 +2,7 @@ use chrono::prelude::*;
 use iron::{AroundMiddleware, Handler};
 use iron::prelude::*;
 use super::super::log;
+use super::uid::Uid;
 
 pub struct AccessLogger;
 
@@ -42,6 +43,7 @@ struct AccessLog<T>
     method: String,
     path: String,
     status: u16,
+    uid: String,
     error: String,
 }
 
@@ -58,12 +60,15 @@ impl<T> AccessLog<T>
             None => 0,
         };
 
+        let uid = Uid::from(&req).uid;
+
         AccessLog {
             start,
             end,
             method: req.method.to_string(),
             path: String::from("/") + req.url.path().join("/").as_str(),
             status,
+            uid,
             error,
         }
     }
@@ -79,6 +84,7 @@ impl<T> ToString for AccessLog<T>
             method:{}\t\
             path:{}\t\
             status:{}\t\
+            uid:{}\t\
             error:{}",
             self.start,
             self.end,
@@ -86,6 +92,7 @@ impl<T> ToString for AccessLog<T>
             self.method,
             self.path,
             self.status,
+            self.uid,
             log::escape_tab(&self.error),
         )
     }
