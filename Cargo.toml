@@ -1,0 +1,12 @@
+[package]
+name = "dataopen"
+version = "0.0.0"
+authors = ["Keiji Yoshida <kjmrknsn@gmail.com>"]
+description = "Collaborative Data Analysis Platform"
+license = "MIT/Apache-2.0"
+
+[dependencies]
+
+[[bin]]
+name = "dataopen-web"
+path = "src/bin/web.rs"
