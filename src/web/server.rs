@@ -23,7 +23,6 @@ pub fn run() {
         conf.http.addr
     ));
 
-
     Iron::new(chain::new(mysql_pool))
         .http(&conf.http.addr).unwrap();
 }
