@@ -9,6 +9,7 @@ pub fn new() -> Router {
         handler::notebook::post,
         "post_notebook"
     );
+
     router.get(
         "/web/uid",
         handler::uid::get,

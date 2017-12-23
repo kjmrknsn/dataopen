@@ -2,7 +2,7 @@ use iron::prelude::*;
 use iron::status;
 use persistent;
 use super::super::mysql_pool::MysqlPool;
-use super::super::string_error::StringError;
+use super::super::super::string_error::StringError;
 
 pub fn post(req: &mut Request) -> IronResult<Response> {
     let arc = req.get::<persistent::Read<MysqlPool>>().unwrap();

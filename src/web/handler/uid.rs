@@ -1,7 +1,7 @@
 use iron::prelude::*;
 use iron::status;
 use serde_json;
-use super::super::string_error::StringError;
+use super::super::super::string_error::StringError;
 use super::super::uid::Uid;
 
 pub fn get(req: &mut Request) -> IronResult<Response> {

@@ -6,5 +6,4 @@ pub mod handler;
 pub mod mysql_pool;
 pub mod router;
 pub mod server;
-pub mod string_error;
 pub mod uid;
