@@ -4,6 +4,7 @@ use toml;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Config {
+    pub mysql: Mysql,
     pub http: HTTP,
 }
 
@@ -19,4 +20,9 @@ impl Config {
 #[derive(Clone, Debug, Deserialize)]
 pub struct HTTP {
     pub addr: String,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+pub struct Mysql {
+    pub url: String,
 }
