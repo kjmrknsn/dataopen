@@ -1,5 +1,6 @@
 module Navbar exposing (..)
 
+import ExtAttributes exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Model exposing (Model)
@@ -23,7 +24,23 @@ view model =
             , span
                 [ class "small text-secondary"
                 ]
-                [ text "version " ++ version
+                [ text ("version " ++ version)
                 ]
             ]
+        , button
+            [ class "navbar-toggler"
+            , type_ "button"
+            , dataToggle "collapse"
+            , dataTarget "#navbarSupportedContent"
+            , ariaControls "navbarSupportedContent"
+            , ariaExpanded "false"
+            , ariaLabel "Toggle navigation"
+            ]
+            [ span [ class "navbar-toggler-icon" ] []
+            ]
+        , div
+            [ class "collapse navbar-collapse"
+            , id "navbarSupportedContent"
+            ]
+            []
         ]
