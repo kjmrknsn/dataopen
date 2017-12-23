@@ -3,6 +3,7 @@ module Navbar exposing (..)
 import ExtAttributes exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Version exposing (..)
@@ -53,6 +54,7 @@ view model =
                     ]
                     [ button
                         [ class "btn btn-success"
+                        , onClick CreateNotebook
                         ]
                         [ text "Create"
                         ]

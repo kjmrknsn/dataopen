@@ -7,9 +7,11 @@ import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Navbar
 import Navigation exposing (Location)
+import Notebook exposing (..)
 import Uid exposing (..)
 
 
+main : Program Never Model Msg
 main =
     Navigation.program UrlChange
         { init = init
@@ -37,6 +39,15 @@ update msg model =
                     (Model.updateUid model uid, Cmd.none)
                 Err _ ->
                     (model, Cmd.none)
+        CreateNotebook ->
+            (model, Http.send CreateNotebookResult createNotebook)
+        CreateNotebookResult result ->
+            case result of
+                Ok notebook_id ->
+                    (model, Cmd.none)
+                Err _ ->
+                    (model, Cmd.none)
+
 
 
 view : Model -> Html Msg
