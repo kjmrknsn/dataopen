@@ -3,6 +3,8 @@ extern crate chrono;
 #[macro_use]
 extern crate hyper;
 extern crate iron;
+#[macro_use]
+extern crate mysql;
 extern crate persistent;
 extern crate router;
 extern crate serde;
