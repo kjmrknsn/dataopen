@@ -11,11 +11,15 @@ pub struct Uid {
 
 impl Uid {
     pub fn from(req: &Request) -> Self {
-        let uid = match req.headers.get::<UidHeader>() {
+        Uid {
+            uid: Self::uid(&req),
+        }
+    }
+
+    pub fn uid(req: &Request) -> String {
+        match req.headers.get::<UidHeader>() {
             Some(uid) => uid.to_string(),
             None => String::new(),
-        };
-
-        Uid { uid }
+        }
     }
 }
