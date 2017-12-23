@@ -42,13 +42,22 @@ view model =
                 []
             ]
         , div
-            [ class "collapse navbar-collapse"
+            [ class "collapse navbar-collapse ml-4"
             , id "navbarSupportedContent"
             ]
             [ ul
                 [ class "navbar-nav mr-auto"
                 ]
-                []
+                [ li
+                    [ class "nav-item active"
+                    ]
+                    [ button
+                        [ class "btn btn-success"
+                        ]
+                        [ text "Create"
+                        ]
+                    ]
+                ]
             , div
                 []
                 [ div
