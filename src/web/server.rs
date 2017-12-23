@@ -1,8 +1,8 @@
 use iron::Iron;
+use mysql::Pool;
 use super::args::Args;
 use super::chain;
 use super::config::Config;
-use super::mysql_pool::MysqlPool;
 use super::super::log;
 
 pub fn run() {
@@ -15,7 +15,7 @@ pub fn run() {
 
     let conf = Config::from(&args.conf_path);
 
-    let mysql_pool = MysqlPool::new(&conf.mysql);
+    let mysql_pool = Pool::new(&conf.mysql.url).unwrap();
 
     log::info(&appname_version());
     log::info(&format!(
@@ -24,7 +24,8 @@ pub fn run() {
     ));
 
 
-    Iron::new(chain::new()).http(&conf.http.addr).unwrap();
+    Iron::new(chain::new(mysql_pool))
+        .http(&conf.http.addr).unwrap();
 }
 
 fn appname_version() -> String {

@@ -1,18 +1,8 @@
+use iron::typemap::Key;
 use mysql::Pool;
-use super::config::Mysql;
 
-pub struct MysqlPool {
-    pub pool: Pool,
+pub struct MysqlPool;
+
+impl Key for MysqlPool {
+    type Value = Pool;
 }
-
-impl MysqlPool {
-    pub fn new(conf: &Mysql) -> Self {
-        let pool = Pool::new(&conf.url).unwrap();
-
-        MysqlPool {
-            pool,
-        }
-    }
-}
-
-
