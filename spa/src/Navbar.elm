@@ -36,11 +36,26 @@ view model =
             , ariaExpanded "false"
             , ariaLabel "Toggle navigation"
             ]
-            [ span [ class "navbar-toggler-icon" ] []
+            [ span
+                [ class "navbar-toggler-icon"
+                ]
+                []
             ]
         , div
             [ class "collapse navbar-collapse"
             , id "navbarSupportedContent"
             ]
-            []
+            [ ul
+                [ class "navbar-nav mr-auto"
+                ]
+                []
+            , div
+                []
+                [ div
+                    [ class "text-white"
+                    ]
+                    [ text "xxxx"
+                    ]
+                ]
+            ]
         ]
