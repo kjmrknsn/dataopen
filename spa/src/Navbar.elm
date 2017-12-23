@@ -54,7 +54,7 @@ view model =
                 [ div
                     [ class "text-white"
                     ]
-                    [ text "xxxx"
+                    [ text model.uid
                     ]
                 ]
             ]

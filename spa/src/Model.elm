@@ -4,9 +4,18 @@ import Page exposing (Page(..))
 
 
 type alias Model =
-    { page: Page }
+    { page : Page
+    , uid : String
+    }
 
 
 new : Model
 new =
-    { page = Home }
+    { page = Home
+    , uid = ""
+    }
+
+
+updateUid : Model -> String -> Model
+updateUid model uid =
+    { model | uid = uid }

@@ -2,10 +2,12 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Http
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Navbar
 import Navigation exposing (Location)
+import Uid exposing (..)
 
 
 main =
@@ -19,7 +21,9 @@ main =
 
 init : Location -> (Model, Cmd Msg)
 init location =
-    (Model.new, Cmd.none)
+    ( Model.new
+    , Http.send GetUidResult getUid
+    )
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -27,6 +31,12 @@ update msg model =
     case msg of
         UrlChange location ->
             (model, Cmd.none)
+        GetUidResult result ->
+            case result of
+                Ok uid ->
+                    (Model.updateUid model uid, Cmd.none)
+                Err _ ->
+                    (model, Cmd.none)
 
 
 view : Model -> Html Msg
