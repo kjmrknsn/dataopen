@@ -15,4 +15,5 @@ extern crate toml;
 
 pub mod log;
 pub mod notebook;
+pub mod notebook_history;
 pub mod web;

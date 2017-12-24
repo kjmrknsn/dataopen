@@ -2,26 +2,29 @@ use mysql::{self, Transaction};
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Notebook {
+pub struct NotebookHistory {
     pub id: u64,
 }
 
-impl Notebook {
+impl NotebookHistory {
     pub fn new(id: u64) -> Self {
-        Notebook {
+        NotebookHistory {
             id,
         }
     }
 
-    pub fn insert(transaction: &mut Transaction, created_by: String)
+    pub fn insert(transaction: &mut Transaction, notebook_id: u64, created_by: String)
         -> Result<Self, mysql::error::Error> {
         let query_result = transaction.prep_exec(r"
-            insert into notebook (
-                created_by
+            insert into notebook_history (
+                notebook_id
+            ,   created_by
             ) values (
-                :created_by
+                :notebook_id
+            ,   :created_by
             )
         ", params! {
+            "notebook_id" => notebook_id,
             "created_by" => &created_by,
         })?;
 
