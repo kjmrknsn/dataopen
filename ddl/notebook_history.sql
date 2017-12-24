@@ -1,7 +1,7 @@
 create table notebook_history (
     id bigint unsigned not null auto_increment
   , notebook_id bigint unsigned not null
-  , created_by varchar(64)
+  , created_by varchar(64) not null
   , is_completed bool not null default false
   , completed_at timestamp null
   , created_at timestamp not null default current_timestamp
