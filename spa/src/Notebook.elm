@@ -6,7 +6,7 @@ import Http
 
 createNotebook: Http.Request String
 createNotebook =
-    Http.post "/web/notebook" Http.emptyBody decodeNotebook
+    Http.post "/web/notebooks" Http.emptyBody decodeNotebook
 
 
 decodeNotebook : Decode.Decoder String

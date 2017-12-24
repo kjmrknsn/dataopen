@@ -4,6 +4,7 @@ use iron::mime::{Attr, Mime, TopLevel, SubLevel};
 use iron::modifiers::Header;
 
 pub mod notebook;
+pub mod notebook_history;
 pub mod uid;
 
 pub fn content_type() -> Header<ContentType> {
