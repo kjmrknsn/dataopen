@@ -1,6 +1,5 @@
 use iron::prelude::*;
 use iron::status;
-use mysql::IsolationLevel::RepeatableRead;
 use persistent;
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook::Notebook;
@@ -10,17 +9,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     let arc = req.get::<persistent::Read<MysqlPool>>().unwrap();
     let mysql_pool = arc.as_ref();
 
-    let mut transaction = match mysql_pool.start_transaction(
-        true,
-        Some(RepeatableRead),
-        None
-    ) {
-        Ok(transaction) => transaction,
-        Err(err) => return Err(IronError::new(
-            err,
-            status::InternalServerError
-        )),
-    };
+    let mut transaction = super::transaction(mysql_pool)?;
 
     let notebook = match Notebook::insert(
         &mut transaction,
@@ -32,7 +21,6 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
             status::InternalServerError,
         )),
     };
-
 
     let notebook = super::json(&notebook)?;
 
