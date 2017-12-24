@@ -41,7 +41,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         )),
     };
 
-    let notebook_hisotry = match NotebookHistory::get_draft(
+    let notebook_history = match NotebookHistory::get_draft(
         &mut transaction,
         notebook_id,
         &uid,
@@ -62,6 +62,15 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         )),
     };
 
+
+    let notebook_history = match serde_json::to_string(&notebook_history) {
+        Ok(notebook_history) => notebook_history,
+        Err(err) => return Err(IronError::new(
+            err,
+            status::InternalServerError
+        ))
+    };
+
     if let Err(err) = transaction.commit() {
         return Err(IronError::new(
             err,
@@ -69,9 +78,10 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         ));
     };
 
+
     Ok(Response::with((
         status::Ok,
         super::content_type(),
-        "{}",
+        notebook_history,
     )))
 }

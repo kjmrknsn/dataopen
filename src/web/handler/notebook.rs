@@ -34,19 +34,19 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         )),
     };
 
-    if let Err(err) = transaction.commit() {
-        return Err(IronError::new(
-            err,
-            status::InternalServerError,
-        ));
-    };
-
     let notebook = match serde_json::to_string(&notebook) {
         Ok(notebook) => notebook,
         Err(err) => return Err(IronError::new(
             err,
             status::InternalServerError
         ))
+    };
+
+    if let Err(err) = transaction.commit() {
+        return Err(IronError::new(
+            err,
+            status::InternalServerError,
+        ));
     };
 
     Ok(Response::with((
