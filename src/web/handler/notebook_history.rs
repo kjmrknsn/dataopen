@@ -71,13 +71,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         ))
     };
 
-    if let Err(err) = transaction.commit() {
-        return Err(IronError::new(
-            err,
-            status::InternalServerError,
-        ));
-    };
-
+    super::commit(transaction)?;
 
     Ok(Response::with((
         status::Ok,
