@@ -11,12 +11,12 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     let arc = req.get::<persistent::Read<MysqlPool>>().unwrap();
     let mysql_pool = arc.as_ref();
 
-    let mut tx = match mysql_pool.start_transaction(
+    let mut transaction = match mysql_pool.start_transaction(
         true,
         Some(RepeatableRead),
         None
     ) {
-        Ok(tx) => tx,
+        Ok(transaction) => transaction,
         Err(err) => return Err(IronError::new(
             err,
             status::InternalServerError
@@ -24,7 +24,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     };
 
     let notebook = match Notebook::insert(
-        &mut tx,
+        &mut transaction,
         Some(Uid::uid(&req))
     ) {
         Ok(notebook) => notebook,
@@ -34,7 +34,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         )),
     };
 
-    if let Err(err) = tx.commit() {
+    if let Err(err) = transaction.commit() {
         return Err(IronError::new(
             err,
             status::InternalServerError,

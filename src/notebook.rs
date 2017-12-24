@@ -15,8 +15,8 @@ impl Notebook {
         }
     }
 
-    pub fn insert(tx: &mut Transaction, created_by: Option<String>) -> Result<Self, mysql::error::Error> {
-        let query_result = tx.prep_exec(r"
+    pub fn insert(transaction: &mut Transaction, created_by: Option<String>) -> Result<Self, mysql::error::Error> {
+        let query_result = transaction.prep_exec(r"
             insert into notebook (
                 created_by
             ) values (
