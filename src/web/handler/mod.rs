@@ -5,6 +5,8 @@ use iron::modifiers::Header;
 use iron::prelude::*;
 use iron::status;
 use mysql::Transaction;
+use serde::ser::Serialize;
+use serde_json;
 
 pub mod notebook;
 pub mod notebook_history;
@@ -22,6 +24,17 @@ pub fn commit(transaction: Transaction) -> Result<(), IronError> {
     match transaction.commit() {
         Ok(_) => Ok(()),
         Err(err) => Err(IronError::new(
+            err,
+            status::InternalServerError
+        )),
+    }
+}
+
+pub fn json<T>(v: &T) -> Result<String, IronError>
+    where T: Serialize {
+    match serde_json::to_string(v) {
+        Ok(v) => Ok(v),
+        Err(err) => return Err(IronError::new(
             err,
             status::InternalServerError
         )),

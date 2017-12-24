@@ -3,7 +3,6 @@ use iron::prelude::*;
 use iron::status;
 use mysql::IsolationLevel::RepeatableRead;
 use persistent;
-use serde_json;
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook_history::NotebookHistory;
 use super::super::uid::Uid;
@@ -63,13 +62,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     };
 
 
-    let notebook_history = match serde_json::to_string(&notebook_history) {
-        Ok(notebook_history) => notebook_history,
-        Err(err) => return Err(IronError::new(
-            err,
-            status::InternalServerError
-        ))
-    };
+    let notebook_history = super::json(&notebook_history)?;
 
     super::commit(transaction)?;
 
