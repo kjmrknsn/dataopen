@@ -1,3 +1,5 @@
+use mysql::{self, Transaction};
+
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Notebook {
@@ -11,5 +13,22 @@ impl Notebook {
             id,
             created_by,
         }
+    }
+
+    pub fn insert(tx: &mut Transaction, created_by: Option<String>) -> Result<Self, mysql::error::Error> {
+        let query_result = tx.prep_exec(r"
+            insert into notebook (
+                created_by
+            ) values (
+                :created_by
+            )
+        ", params! {
+            "created_by" => created_by.as_ref(),
+        })?;
+
+        Ok(Notebook {
+            id: query_result.last_insert_id(),
+            created_by,
+        })
     }
 }
