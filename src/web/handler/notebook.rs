@@ -1,6 +1,7 @@
 use iron::prelude::*;
 use iron::status;
 use persistent;
+use super::{commit, json, transaction};
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook::Notebook;
 use super::super::uid::Uid;
@@ -9,7 +10,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     let arc = req.get::<persistent::Read<MysqlPool>>().unwrap();
     let mysql_pool = arc.as_ref();
 
-    let mut transaction = super::transaction(mysql_pool)?;
+    let mut transaction = transaction(mysql_pool)?;
 
     let notebook = match Notebook::insert(
         &mut transaction,
@@ -22,9 +23,9 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         )),
     };
 
-    let notebook = super::json(&notebook)?;
+    let notebook = json(&notebook)?;
 
-    super::commit(transaction)?;
+    commit(transaction)?;
 
     Ok(Response::with((
         status::Ok,

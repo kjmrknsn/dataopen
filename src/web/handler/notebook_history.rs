@@ -2,6 +2,7 @@ use router::Router;
 use iron::prelude::*;
 use iron::status;
 use persistent;
+use super::{commit, json, transaction};
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook_history::NotebookHistory;
 use super::super::uid::Uid;
@@ -20,6 +21,7 @@ pub fn notebook_id(req: &Request) -> Result<u64, IronError> {
         ))
     }
 }
+
 pub fn post(req: &mut Request) -> IronResult<Response> {
     let uid = Uid::uid(&req);
     let notebook_id = notebook_id(&req)?;
@@ -27,7 +29,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     let arc = req.get::<persistent::Read<MysqlPool>>().unwrap();
     let mysql_pool = arc.as_ref();
 
-    let mut transaction = super::transaction(mysql_pool)?;
+    let mut transaction = transaction(mysql_pool)?;
 
     let notebook_history = match NotebookHistory::get_draft(
         &mut transaction,
@@ -51,9 +53,9 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     };
 
 
-    let notebook_history = super::json(&notebook_history)?;
+    let notebook_history = json(&notebook_history)?;
 
-    super::commit(transaction)?;
+    commit(transaction)?;
 
     Ok(Response::with((
         status::Ok,
