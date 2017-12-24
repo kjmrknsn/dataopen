@@ -25,7 +25,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
 
     let notebook = match Notebook::insert(
         &mut transaction,
-        Some(Uid::uid(&req))
+        Uid::uid(&req)
     ) {
         Ok(notebook) => notebook,
         Err(err) => return Err(IronError::new(
