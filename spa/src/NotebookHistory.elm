@@ -19,6 +19,11 @@ new =
     }
 
 
+updateTitle: Model -> String -> Model
+updateTitle model title =
+    { model | title = title }
+
+
 getNotebookHistory: Int -> Int -> Http.Request Model
 getNotebookHistory notebookId id =
     Http.get

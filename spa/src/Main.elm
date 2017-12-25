@@ -74,6 +74,10 @@ update msg model =
                     (Model.updateNotebookHistory model notebookHistory, Cmd.none)
                 Err _ ->
                     error model
+        UpdateNotebookHistoryTitleOnLocal title ->
+            ( { model | notebookHistory = (NotebookHistory.updateTitle model.notebookHistory title) }
+            , Cmd.none
+            )
 
 
 urlUpdate : Model -> Navigation.Location -> ( Model, Cmd Msg )
