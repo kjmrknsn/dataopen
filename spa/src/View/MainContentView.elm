@@ -5,6 +5,7 @@ import Html.Attributes exposing (..)
 import Model exposing (Model)
 import Msg exposing (Msg)
 import Page exposing (Page(..))
+import View.ErrorView as ErrorView
 import View.HomeView as HomeView
 import View.NotebookHistoryView as NotebookHistoryView
 import View.NotFoundView as NotFoundView
@@ -23,4 +24,6 @@ view model =
                         NotebookHistoryView.view model
                     NotFound ->
                         NotFoundView.view model
+                    Error ->
+                        ErrorView.view model
         ]

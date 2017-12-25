@@ -43,7 +43,7 @@ update msg model =
                 Ok uid ->
                     (Model.updateUid model uid, Cmd.none)
                 Err _ ->
-                    (model, Cmd.none)
+                    error model
         CreateNotebook ->
             (model, Http.send CreateNotebookResult createNotebook)
         CreateNotebookResult result ->
@@ -51,7 +51,7 @@ update msg model =
                 Ok id ->
                     (model, Http.send CreateNotebookHistoryResult (createNotebookHistory id))
                 Err _ ->
-                    (model, Cmd.none)
+                    error model
         CreateNotebookHistoryResult result ->
             case result of
                 Ok notebookHistory ->
@@ -65,7 +65,7 @@ update msg model =
                       )
                     )
                 Err _ ->
-                    (model, Cmd.none)
+                    error model
 
 
 urlUpdate : Model -> Navigation.Location -> ( Model, Cmd Msg )
@@ -95,7 +95,13 @@ routeParser =
             </> UrlParser.int
             </> UrlParser.s "edit"
             )
+        , UrlParser.map Error (UrlParser.s "error")
         ]
+
+
+error : Model -> (Model, Cmd Msg)
+error model =
+    (model, Navigation.load "#/error")
 
 
 view : Model -> Html Msg

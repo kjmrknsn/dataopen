@@ -5,3 +5,4 @@ type Page
     = Home
     | EditNotebookHistory Int Int
     | NotFound
+    | Error
