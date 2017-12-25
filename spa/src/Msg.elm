@@ -8,4 +8,4 @@ type Msg
     = UrlChange Location
     | GetUidResult (Result Http.Error String)
     | CreateNotebook
-    | CreateNotebookResult (Result Http.Error String)
+    | CreateNotebookResult (Result Http.Error Int)

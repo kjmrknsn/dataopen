@@ -16,6 +16,11 @@ new =
     }
 
 
+updatePage : Model -> Page -> Model
+updatePage model page =
+    { model | page = page }
+
+
 updateUid : Model -> String -> Model
 updateUid model uid =
     { model | uid = uid }
