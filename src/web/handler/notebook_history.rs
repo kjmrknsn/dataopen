@@ -4,7 +4,7 @@ use persistent;
 
 use super::prelude::*;
 use super::super::mysql_pool::MysqlPool;
-use super::super::super::notebook_history::NotebookHistory;
+use super::super::super::notebook_history::{NotebookHistory, NotebookHistoryTitle};
 
 pub fn get(req: &mut Request) -> IronResult<Response> {
     let id = param(&req, "id")?;
@@ -62,25 +62,20 @@ pub fn patch_title(req: &mut Request) -> IronResult<Response> {
     let id = param(&req, "id")?;
     let notebook_id = param(&req, "notebook_id")?;
 
-    let notebook_history: NotebookHistory = json_de(&body_string(req)?)?;
+    let notebook_history_title: NotebookHistoryTitle = json_de(&body_string(req)?)?;
 
     let mysql_pool= req.get::<persistent::Read<MysqlPool>>().unwrap();
 
     let mut transaction = transaction(mysql_pool.as_ref())?;
 
-    let affected_rows = result(NotebookHistory::update_title(
+    result(NotebookHistory::update_title(
         &mut transaction,
         id,
         notebook_id,
-        &notebook_history.title,
+        &notebook_history_title.title,
     ))?;
 
-    if affected_rows == 0 {
-        return Err(IronError::new(
-            StringError(format!("There was no row to update. (id: {}, notebook_id: {})", id, notebook_id)),
-            status::BadRequest
-        ));
-    }
+    commit(transaction)?;
 
     Ok(Response::with((
         status::Ok,

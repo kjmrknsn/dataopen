@@ -1,6 +1,8 @@
 module NotebookHistory exposing (..)
 
-import Json.Decode as Decode exposing (..)
+import ExtHttp
+import Json.Decode as Decode
+import Json.Encode as Encode
 import Http
 
 
@@ -19,9 +21,28 @@ new =
     }
 
 
-updateTitle: Model -> String -> Model
-updateTitle model title =
+updateTitleOnLocal: Model -> String -> Model
+updateTitleOnLocal model title =
     { model | title = title }
+
+
+updateTitle : Model -> Http.Request Decode.Value
+updateTitle notebookHistory =
+    let
+        body =
+            { title = notebookHistory.title }
+                |> notebookHistoryTitleEncoder
+                |> Http.jsonBody
+    in
+        ExtHttp.patch
+            ( "/web/notebooks/"
+            ++ toString notebookHistory.notebookId
+            ++ "/notebook_histories/"
+            ++ toString notebookHistory.id
+            ++ "/title"
+            )
+            body
+            Decode.value
 
 
 getNotebookHistory: Int -> Int -> Http.Request Model
@@ -41,4 +62,13 @@ createNotebookHistory notebookId =
 
 decodeNotebookHistory : Decode.Decoder Model
 decodeNotebookHistory  =
-    map3 Model (field "id" int) (field "notebookId" int) (field "title" string)
+    Decode.map3 Model
+        (Decode.field "id" Decode.int)
+        (Decode.field "notebookId" Decode.int)
+        (Decode.field "title" Decode.string)
+
+
+notebookHistoryTitleEncoder : { title : String } -> Encode.Value
+notebookHistoryTitleEncoder notebookHistoryTitle =
+    Encode.object
+        [ ("title", Encode.string notebookHistoryTitle.title) ]

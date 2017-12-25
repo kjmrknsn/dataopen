@@ -2,7 +2,7 @@ module View.NotebookHistoryView exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onBlur)
 import Model
 import Msg exposing (Msg(..))
 
@@ -17,6 +17,7 @@ header model =
             , maxlength 128
             , value model.notebookHistory.title
             , onInput UpdateNotebookHistoryTitleOnLocal
+            , onBlur UpdateNotebookHistoryTitle
             ]
             []
         ]

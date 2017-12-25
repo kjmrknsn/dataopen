@@ -9,6 +9,11 @@ pub struct NotebookHistory {
     pub title: String,
 }
 
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
+pub struct NotebookHistoryTitle {
+    pub title: String,
+}
+
 impl NotebookHistory {
     pub fn new(id: u64, notebook_id: u64, title: String) -> Self {
         NotebookHistory {
@@ -95,8 +100,8 @@ impl NotebookHistory {
     }
 
     pub fn update_title(transaction: &mut Transaction, id: u64, notebook_id: u64, title: &str)
-        -> Result<u64, mysql::error::Error> {
-        let query_result = transaction.prep_exec(r"
+        -> Result<(), mysql::error::Error> {
+        transaction.prep_exec(r"
             update notebook_history
             set
                 title = :title
@@ -109,6 +114,6 @@ impl NotebookHistory {
             "title" => title,
         })?;
 
-        Ok(query_result.affected_rows())
+        Ok(())
     }
 }

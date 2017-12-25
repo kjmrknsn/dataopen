@@ -1,5 +1,6 @@
 module Msg exposing (..)
 
+import Json.Decode as Decode
 import Http
 import Navigation exposing (Location)
 import NotebookHistory
@@ -13,3 +14,5 @@ type Msg
     | CreateNotebookHistoryResult (Result Http.Error NotebookHistory.Model)
     | GetNotebookHistoryResult (Result Http.Error NotebookHistory.Model)
     | UpdateNotebookHistoryTitleOnLocal String
+    | UpdateNotebookHistoryTitle
+    | UpdateNotebookHistoryTitleResult (Result Http.Error Decode.Value)
