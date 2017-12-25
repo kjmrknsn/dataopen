@@ -4,6 +4,7 @@ import Http
 import Navigation exposing (Location)
 import NotebookHistory
 
+
 type Msg
     = UrlChange Location
     | GetUidResult (Result Http.Error String)
