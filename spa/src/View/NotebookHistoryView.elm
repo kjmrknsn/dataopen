@@ -13,6 +13,7 @@ header model =
         [ input
             [ class "w-100 border-0 h3 m-0"
             , placeholder "Title"
+            , maxlength 128
             ]
             []
         ]
