@@ -1,12 +1,13 @@
 use iron::prelude::*;
 use iron::status;
-use super::{commit, json, transaction, resource};
+use persistent;
+use super::{commit, json, transaction};
 use super::super::super::notebook::Notebook;
 use super::super::mysql_pool::MysqlPool;
 use super::super::uid::Uid;
 
-pub fn post(mut req: &mut Request) -> IronResult<Response> {
-    let mysql_pool = resource::<MysqlPool>(&mut req);
+pub fn post(req: &mut Request) -> IronResult<Response> {
+    let mysql_pool =  req.get::<persistent::Read<MysqlPool>>().unwrap();
     let mysql_pool = mysql_pool.as_ref();
 
     let mut transaction = transaction(mysql_pool)?;

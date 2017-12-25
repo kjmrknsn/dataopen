@@ -4,13 +4,10 @@ use iron::mime::{Attr, Mime, TopLevel, SubLevel};
 use iron::modifiers::Header;
 use iron::prelude::*;
 use iron::status;
-use iron::typemap;
 use mysql::IsolationLevel::RepeatableRead;
 use mysql::{Pool, Transaction};
-use persistent;
 use serde::ser::Serialize;
 use serde_json;
-use std::sync::Arc;
 
 pub mod notebook;
 pub mod notebook_history;
@@ -57,10 +54,4 @@ pub fn transaction(mysql_pool: &Pool) -> Result<Transaction, IronError> {
             status::InternalServerError
         )),
     }
-}
-
-pub fn resource<T>(req: &mut Request) -> Arc<<T as typemap::Key>::Value>
-    where T: typemap::Key + Sync,
-          <T as typemap::Key>::Value: Send + Sync {
-    req.get::<persistent::Read<T>>().unwrap()
 }
