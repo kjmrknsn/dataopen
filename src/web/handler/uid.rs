@@ -1,22 +1,16 @@
 use iron::prelude::*;
 use iron::status;
-use serde_json;
+use super::prelude::*;
 use super::super::uid::Uid;
 
 pub fn get(req: &mut Request) -> IronResult<Response> {
-    let uid = Uid::from(&req);
+    let uid = Uid::new(uid(&req));
 
-    let uid = match serde_json::to_string(&uid) {
-        Ok(uid) => uid,
-        Err(err) => return Err(IronError::new(
-            err,
-            status::InternalServerError
-        ))
-    };
+    let uid = json(&uid)?;
 
     Ok(Response::with((
         status::Ok,
-        super::content_type(),
+        content_type(),
         uid
     )))
 }

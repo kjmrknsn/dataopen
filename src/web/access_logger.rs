@@ -1,8 +1,8 @@
 use chrono::prelude::*;
 use iron::{AroundMiddleware, Handler};
 use iron::prelude::*;
+use super::handler::prelude::uid;
 use super::super::log;
-use super::uid::Uid;
 
 pub struct AccessLogger;
 
@@ -60,7 +60,7 @@ impl<T> AccessLog<T>
             None => 0,
         };
 
-        let uid = Uid::from(&req).uid;
+        let uid = uid(&req);
 
         AccessLog {
             start,
