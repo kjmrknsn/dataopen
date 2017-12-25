@@ -8,7 +8,7 @@ import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Navbar
 import Navigation exposing (Location)
-import Notebook exposing (..)
+import Notebook exposing (createNotebook, decodeNotebook)
 import NotFound as NotFound_
 import Page exposing (Page(..))
 import Uid exposing (..)
@@ -96,8 +96,8 @@ mainContent model =
                 case model.page of
                     Home ->
                         Home.view model
-                    EditNotebook notebook_id ->
-                        Home.view model
+                    EditNotebook id ->
+                        Notebook.view model id
                     NotFound ->
                         NotFound_.view model
         ]

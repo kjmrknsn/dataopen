@@ -4,7 +4,6 @@ use persistent;
 use super::prelude::*;
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook::Notebook;
-use super::super::super::notebook_history::NotebookHistory;
 
 pub fn post(req: &mut Request) -> IronResult<Response> {
     let uid = uid(&req);
@@ -15,12 +14,6 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
 
     let notebook = result(Notebook::insert(
         &mut transaction,
-        &uid
-    ))?;
-
-    result(NotebookHistory::insert(
-        &mut transaction,
-        notebook.id,
         &uid
     ))?;
 
