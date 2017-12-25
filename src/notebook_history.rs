@@ -6,20 +6,22 @@ use mysql::prelude::*;
 pub struct NotebookHistory {
     pub id: u64,
     pub notebook_id: u64,
+    pub title: String,
 }
 
 impl NotebookHistory {
-    pub fn new(id: u64, notebook_id: u64) -> Self {
+    pub fn new(id: u64, notebook_id: u64, title: String) -> Self {
         NotebookHistory {
             id,
             notebook_id,
+            title,
         }
     }
 
     pub fn from(row: Row) -> Self {
-        let (id, notebook_id) = mysql::from_row(row);
+        let (id, notebook_id, title) = mysql::from_row(row);
 
-        Self::new(id, notebook_id)
+        Self::new(id, notebook_id, title)
     }
 
     pub fn get<T>(conn: &mut T, id: u64, notebook_id: u64)
@@ -29,6 +31,7 @@ impl NotebookHistory {
             select
                 id
             ,   notebook_id
+            ,   title
             from
                 notebook_history
             where
@@ -52,6 +55,7 @@ impl NotebookHistory {
             select
                 id
             ,   notebook_id
+            ,   title
             from
                 notebook_history
             where
@@ -87,6 +91,6 @@ impl NotebookHistory {
             "created_by" => &created_by,
         })?;
 
-        Ok(Self::new(query_result.last_insert_id(), notebook_id))
+        Ok(Self::new(query_result.last_insert_id(), notebook_id, String::new()))
     }
 }

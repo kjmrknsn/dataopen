@@ -7,13 +7,15 @@ import Http
 type alias Model =
     { id : Int
     , notebookId : Int
+    , title : String
     }
 
 
-new : Int -> Int -> Model
-new id notebookId =
-    { id = id
-    , notebookId = notebookId
+new : Model
+new =
+    { id = 0
+    , notebookId = 0
+    , title = ""
     }
 
 
@@ -34,4 +36,4 @@ createNotebookHistory notebookId =
 
 decodeNotebookHistory : Decode.Decoder Model
 decodeNotebookHistory  =
-    map2 Model (field "id" int) (field "notebookId" int)
+    map3 Model (field "id" int) (field "notebookId" int) (field "title" string)

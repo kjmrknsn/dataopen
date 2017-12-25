@@ -40,18 +40,11 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
 
     let mut transaction = transaction(mysql_pool.as_ref())?;
 
-    let notebook_history = match result(NotebookHistory::get_draft(
+    let notebook_history = result(NotebookHistory::insert(
         &mut transaction,
         notebook_id,
-        &uid,
-    ))? {
-        Some(notebook_history) => notebook_history,
-        None => result(NotebookHistory::insert(
-            &mut transaction,
-            notebook_id,
-            &uid,
-        ))?,
-    };
+        &uid)
+    )?;
 
     let notebook_history = json(&notebook_history)?;
 

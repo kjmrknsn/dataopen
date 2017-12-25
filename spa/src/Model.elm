@@ -7,7 +7,7 @@ import Page exposing (Page(..))
 type alias Model =
     { page : Page
     , uid : String
-    , notebookHistory : Maybe NotebookHistory.Model
+    , notebookHistory : NotebookHistory.Model
     }
 
 
@@ -15,13 +15,13 @@ new : Model
 new =
     { page = Home
     , uid = ""
-    , notebookHistory = Nothing
+    , notebookHistory = NotebookHistory.new
     }
 
 
 updatePage : Model -> Page -> Model
 updatePage model page =
-    { model | page = page, notebookHistory = Nothing }
+    { model | page = page, notebookHistory = NotebookHistory.new }
 
 
 updateUid : Model -> String -> Model
@@ -29,6 +29,6 @@ updateUid model uid =
     { model | uid = uid }
 
 
-updateNotebookHistory : Model -> Maybe NotebookHistory.Model -> Model
+updateNotebookHistory : Model -> NotebookHistory.Model -> Model
 updateNotebookHistory model notebookHistory =
     { model | notebookHistory = notebookHistory }

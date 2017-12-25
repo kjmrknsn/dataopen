@@ -71,7 +71,7 @@ update msg model =
         GetNotebookHistoryResult result ->
             case result of
                 Ok notebookHistory ->
-                    (Model.updateNotebookHistory model (Just notebookHistory), Cmd.none)
+                    (Model.updateNotebookHistory model notebookHistory, Cmd.none)
                 Err _ ->
                     error model
 
