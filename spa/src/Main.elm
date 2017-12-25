@@ -95,6 +95,8 @@ mainContent model =
                 case model.page of
                     Home ->
                         Home.view model
+                    EditNotebook ->
+                        Home.view model
                     NotFound ->
                         NotFound_.view model
         ]
