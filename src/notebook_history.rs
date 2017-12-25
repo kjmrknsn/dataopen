@@ -93,4 +93,22 @@ impl NotebookHistory {
 
         Ok(Self::new(query_result.last_insert_id(), notebook_id, String::new()))
     }
+
+    pub fn update_title(transaction: &mut Transaction, id: u64, notebook_id: u64, title: &str)
+        -> Result<u64, mysql::error::Error> {
+        let query_result = transaction.prep_exec(r"
+            update notebook_history
+            set
+                title = :title
+            where
+                id = :id
+            and notebook_id = :notebook_id
+        ", params! {
+            "id" => id,
+            "notebook_id" => notebook_id,
+            "title" => title,
+        })?;
+
+        Ok(query_result.affected_rows())
+    }
 }

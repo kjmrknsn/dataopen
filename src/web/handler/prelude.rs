@@ -7,6 +7,7 @@ use iron::status;
 use mysql::IsolationLevel::RepeatableRead;
 use mysql::{Pool, PooledConn, Transaction};
 use router::Router;
+use serde::de::Deserialize;
 use serde::ser::Serialize;
 use serde_json;
 use std;
@@ -32,6 +33,11 @@ pub fn commit(transaction: Transaction) -> Result<(), IronError> {
 pub fn json<T>(v: &T) -> Result<String, IronError>
     where T: Serialize {
     result(serde_json::to_string(v))
+}
+
+pub fn json_de<'a, T>(v: &'a str) -> Result<T, IronError>
+    where T: Deserialize<'a> {
+    result_bad_request(serde_json::from_str(v))
 }
 
 pub fn conn(mysql_pool: &Pool) -> Result<PooledConn, IronError> {
