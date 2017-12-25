@@ -57,9 +57,18 @@ update msg model =
         CreateNotebookHistoryResult result ->
             case result of
                 Ok notebookHistory ->
-                    (model, Cmd.none)
+                    ( model
+                    , Navigation.load (
+                        "#/notebooks/"
+                      ++ (toString notebookHistory.notebookId)
+                      ++ "/notebook_histories/"
+                      ++ (toString notebookHistory.id)
+                      ++ "/edit"
+                      )
+                    )
                 Err _ ->
                     (model, Cmd.none)
+
 
 urlUpdate : Model -> Navigation.Location -> ( Model, Cmd Msg )
 urlUpdate model location =

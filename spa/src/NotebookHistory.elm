@@ -6,18 +6,18 @@ import Http
 
 type alias Model =
     { id : Int
-    , notebook_id : Int
+    , notebookId : Int
     }
 
 
 createNotebookHistory: Int -> Http.Request Model
-createNotebookHistory notebook_id =
+createNotebookHistory notebookId =
     Http.post
-        ("/web/notebooks/" ++ toString notebook_id ++ "/notebook_histories")
+        ("/web/notebooks/" ++ toString notebookId ++ "/notebook_histories")
         Http.emptyBody
         decodeNotebookHistory
 
 
 decodeNotebookHistory : Decode.Decoder Model
 decodeNotebookHistory  =
-    map2 Model (field "id" int) (field "notebook_id" int)
+    map2 Model (field "id" int) (field "notebookId" int)

@@ -56,7 +56,7 @@ view model =
                         [ class "btn btn-success"
                         , onClick CreateNotebook
                         ]
-                        [ text "Create"
+                        [ text "New Notebook"
                         ]
                     ]
                 ]
