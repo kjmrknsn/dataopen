@@ -14,6 +14,7 @@ import NotFound as NotFound_
 import Page exposing (Page(..))
 import Uid exposing (..)
 import UrlParser exposing ((</>))
+import View.NotebookHistoryView as NotebookHistoryView
 
 
 main : Program Never Model Msg
@@ -89,6 +90,13 @@ routeParser : UrlParser.Parser (Page -> a) a
 routeParser =
     UrlParser.oneOf
         [ UrlParser.map Home UrlParser.top
+        , UrlParser.map EditNotebookHistory
+            ( UrlParser.s "notebooks"
+            </> UrlParser.int
+            </> UrlParser.s "notebook_histories"
+            </> UrlParser.int
+            </> UrlParser.s "edit"
+            )
         ]
 
 
@@ -110,6 +118,8 @@ mainContent model =
                 case model.page of
                     Home ->
                         Home.view model
+                    EditNotebookHistory _ _ ->
+                        NotebookHistoryView.view model
                     NotFound ->
                         NotFound_.view model
         ]

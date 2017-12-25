@@ -10,6 +10,13 @@ type alias Model =
     }
 
 
+new : Int -> Int -> Model
+new id notebookId =
+    { id = id
+    , notebookId = notebookId
+    }
+
+
 createNotebookHistory: Int -> Http.Request Model
 createNotebookHistory notebookId =
     Http.post
