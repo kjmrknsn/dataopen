@@ -1,4 +1,4 @@
-module Navbar exposing (..)
+module View.NavbarView exposing (..)
 
 import ExtAttributes exposing (..)
 import Html exposing (..)

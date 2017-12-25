@@ -1,20 +1,18 @@
 module Main exposing (..)
 
-import Home exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
 import Model exposing (Model)
 import Msg exposing (Msg(..))
-import Navbar
 import Navigation exposing (Location)
 import Notebook exposing (createNotebook, decodeNotebook)
 import NotebookHistory exposing (createNotebookHistory, decodeNotebookHistory)
-import NotFound as NotFound_
 import Page exposing (Page(..))
 import Uid exposing (..)
 import UrlParser exposing ((</>))
-import View.NotebookHistoryView as NotebookHistoryView
+import View.MainContentView as MainContentView
+import View.NavbarView as NavbarView
 
 
 main : Program Never Model Msg
@@ -104,22 +102,6 @@ view : Model -> Html Msg
 view model =
     div
         []
-        [ Navbar.view model
-        , mainContent model
-        ]
-
-
-mainContent : Model -> Html Msg
-mainContent model =
-    main_
-        []
-        [ div
-            [ class "container-fluid" ] <|
-                case model.page of
-                    Home ->
-                        Home.view model
-                    EditNotebookHistory _ _ ->
-                        NotebookHistoryView.view model
-                    NotFound ->
-                        NotFound_.view model
+        [ NavbarView.view model
+        , MainContentView.view model
         ]
