@@ -11,19 +11,26 @@ import View.NotebookHistoryView as NotebookHistoryView
 import View.NotFoundView as NotFoundView
 
 
-view : Model -> Html Msg
+view : Model -> List(Html Msg)
 view model =
-    main_
-        []
-        [ div
-            [ class "container-fluid" ] <|
-                case model.page of
-                    Home ->
-                        HomeView.view model
-                    EditNotebookHistory _ _ ->
-                        NotebookHistoryView.view model
-                    NotFound ->
-                        NotFoundView.view model
-                    Error ->
-                        ErrorView.view model
-        ]
+    [
+        case model.page of
+            EditNotebookHistory _ _ ->
+                NotebookHistoryView.header model
+            _ ->
+                div [] []
+    ,   main_
+            []
+            [ div
+                [ class "container-fluid" ] <|
+                    case model.page of
+                        Home ->
+                            HomeView.view model
+                        EditNotebookHistory _ _ ->
+                            NotebookHistoryView.view model
+                        NotFound ->
+                            NotFoundView.view model
+                        Error ->
+                            ErrorView.view model
+            ]
+    ]

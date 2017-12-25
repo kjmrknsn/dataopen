@@ -116,7 +116,7 @@ error model =
 view : Model -> Html Msg
 view model =
     div
-        []
-        [ NavbarView.view model
-        , MainContentView.view model
-        ]
+        [] <|
+        List.append
+            [ NavbarView.view model ]
+            (MainContentView.view model)
