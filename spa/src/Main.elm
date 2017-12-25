@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
 import Http
 import Model exposing (Model)
 import Msg exposing (Msg(..))
@@ -74,7 +73,8 @@ urlUpdate model location =
     case decode location of
         Nothing ->
             ( Model.updatePage model NotFound, Cmd.none )
-
+        Just (EditNotebookHistory notebookId id) ->
+             ( Model.updatePage model (EditNotebookHistory notebookId id), Cmd.none )
         Just page ->
             ( Model.updatePage model page, Cmd.none )
 
