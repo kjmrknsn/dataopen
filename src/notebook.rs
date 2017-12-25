@@ -13,7 +13,7 @@ impl Notebook {
         }
     }
 
-    pub fn insert(transaction: &mut Transaction, created_by: String)
+    pub fn insert(transaction: &mut Transaction, created_by: &str)
         -> Result<Self, mysql::error::Error> {
         let query_result = transaction.prep_exec(r"
             insert into notebook (

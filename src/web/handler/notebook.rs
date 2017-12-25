@@ -12,7 +12,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
 
     let notebook = result(Notebook::insert(
         &mut transaction,
-        uid(&req)
+        &uid(&req)
     ))?;
 
     let notebook = json(&notebook)?;
