@@ -9,6 +9,7 @@ import Msg exposing (Msg(..))
 import Navbar
 import Navigation exposing (Location)
 import Notebook exposing (createNotebook, decodeNotebook)
+import NotebookHistory exposing (createNotebookHistory, decodeNotebookHistory)
 import NotFound as NotFound_
 import Page exposing (Page(..))
 import Uid exposing (..)
@@ -49,11 +50,16 @@ update msg model =
             (model, Http.send CreateNotebookResult createNotebook)
         CreateNotebookResult result ->
             case result of
-                Ok notebook_id ->
-                    (model, Navigation.load ("#/notebooks/" ++ (toString notebook_id) ++ "/edit"))
+                Ok id ->
+                    (model, Http.send CreateNotebookHistoryResult (createNotebookHistory id))
                 Err _ ->
                     (model, Cmd.none)
-
+        CreateNotebookHistoryResult result ->
+            case result of
+                Ok notebookHistory ->
+                    (model, Cmd.none)
+                Err _ ->
+                    (model, Cmd.none)
 
 urlUpdate : Model -> Navigation.Location -> ( Model, Cmd Msg )
 urlUpdate model location =
@@ -74,7 +80,6 @@ routeParser : UrlParser.Parser (Page -> a) a
 routeParser =
     UrlParser.oneOf
         [ UrlParser.map Home UrlParser.top
-        , UrlParser.map EditNotebook (UrlParser.s "notebooks" </> UrlParser.int </> UrlParser.s "edit")
         ]
 
 
@@ -96,8 +101,6 @@ mainContent model =
                 case model.page of
                     Home ->
                         Home.view model
-                    EditNotebook id ->
-                        Notebook.view model id
                     NotFound ->
                         NotFound_.view model
         ]
