@@ -3,5 +3,5 @@ module Page exposing (..)
 
 type Page
     = Home
-    | EditNotebook
+    | EditNotebook Int
     | NotFound

@@ -74,6 +74,7 @@ routeParser : UrlParser.Parser (Page -> a) a
 routeParser =
     UrlParser.oneOf
         [ UrlParser.map Home UrlParser.top
+        , UrlParser.map EditNotebook (UrlParser.s "notebooks" </> UrlParser.int </> UrlParser.s "edit")
         ]
 
 
@@ -95,7 +96,7 @@ mainContent model =
                 case model.page of
                     Home ->
                         Home.view model
-                    EditNotebook ->
+                    EditNotebook notebook_id ->
                         Home.view model
                     NotFound ->
                         NotFound_.view model
