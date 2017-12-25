@@ -11,10 +11,8 @@ pub fn get(req: &mut Request) -> IronResult<Response> {
 
     let mysql_pool= req.get::<persistent::Read<MysqlPool>>().unwrap();
 
-    let mut transaction = transaction(mysql_pool.as_ref())?;
-
     let notebook_history = match result(NotebookHistory::get(
-        &mut transaction,
+        &mut conn(mysql_pool.as_ref())?,
         id,
         notebook_id,
     ))? {
@@ -26,8 +24,6 @@ pub fn get(req: &mut Request) -> IronResult<Response> {
     };
 
     let notebook_history = json(&notebook_history)?;
-
-    commit(transaction)?;
 
     Ok(Response::with((
         status::Ok,

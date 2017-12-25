@@ -5,7 +5,7 @@ use iron::modifiers::Header;
 use iron::prelude::*;
 use iron::status;
 use mysql::IsolationLevel::RepeatableRead;
-use mysql::{Pool, Transaction};
+use mysql::{Pool, PooledConn, Transaction};
 use router::Router;
 use serde::ser::Serialize;
 use serde_json;
@@ -32,6 +32,10 @@ pub fn commit(transaction: Transaction) -> Result<(), IronError> {
 pub fn json<T>(v: &T) -> Result<String, IronError>
     where T: Serialize {
     result(serde_json::to_string(v))
+}
+
+pub fn conn(mysql_pool: &Pool) -> Result<PooledConn, IronError> {
+    result(mysql_pool.get_conn())
 }
 
 pub fn transaction(mysql_pool: &Pool) -> Result<Transaction, IronError> {
