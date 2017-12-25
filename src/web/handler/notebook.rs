@@ -7,9 +7,8 @@ use super::super::mysql_pool::MysqlPool;
 
 pub fn post(req: &mut Request) -> IronResult<Response> {
     let mysql_pool =  req.get::<persistent::Read<MysqlPool>>().unwrap();
-    let mysql_pool = mysql_pool.as_ref();
 
-    let mut transaction = transaction(mysql_pool)?;
+    let mut transaction = transaction(mysql_pool.as_ref())?;
 
     let notebook = result(Notebook::insert(
         &mut transaction,

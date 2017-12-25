@@ -9,32 +9,22 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     let uid = uid(&req);
     let notebook_id = param(&req, "notebook_id")?;
 
-    let arc = req.get::<persistent::Read<MysqlPool>>().unwrap();
-    let mysql_pool = arc.as_ref();
+    let mysql_pool= req.get::<persistent::Read<MysqlPool>>().unwrap();
 
-    let mut transaction = transaction(mysql_pool)?;
+    let mut transaction = transaction(mysql_pool.as_ref())?;
 
-    let notebook_history = match NotebookHistory::get_draft(
+    let notebook_history = match result(NotebookHistory::get_draft(
         &mut transaction,
         notebook_id,
         &uid,
-    ) {
-        Ok(Some(notebook_history)) => notebook_history,
-        Ok(None) => {
-            match NotebookHistory::insert(&mut transaction, notebook_id, &uid) {
-                Ok(notebook_history) => notebook_history,
-                Err(err) => return Err(IronError::new(
-                    err,
-                    status::InternalServerError
-                )),
-            }
-        },
-        Err(err) => return Err(IronError::new(
-            err,
-            status::InternalServerError
-        )),
+    ))? {
+        Some(notebook_history) => notebook_history,
+        None => result(NotebookHistory::insert(
+            &mut transaction,
+            notebook_id,
+            &uid,
+        ))?,
     };
-
 
     let notebook_history = json(&notebook_history)?;
 
