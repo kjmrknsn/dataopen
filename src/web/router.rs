@@ -10,6 +10,12 @@ pub fn new() -> Router {
         "post_notebook"
     );
 
+    router.get(
+        "/web/notebooks/:notebook_id/notebook_histories/:id",
+        handler::notebook_history::get,
+        "get_notebook_history"
+    );
+
     router.post(
         "/web/notebooks/:notebook_id/notebook_histories",
         handler::notebook_history::post,

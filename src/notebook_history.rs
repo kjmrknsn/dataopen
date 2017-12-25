@@ -21,6 +21,28 @@ impl NotebookHistory {
         Self::new(id, notebook_id)
     }
 
+    pub fn get(transaction: &mut Transaction, id: u64, notebook_id: u64)
+        -> Result<Option<Self>, mysql::error::Error> {
+        let row: Option<Row> = transaction.first_exec(r"
+            select
+                id
+            ,   notebook_id
+            from
+                notebook_history
+            where
+                id = :id
+            and notebook_id = :notebook_id
+        ", params! {
+            "id" => id,
+            "notebook_id" => notebook_id
+        })?;
+
+        match row {
+            Some(row) => Ok(Some(Self::from(row))),
+            None => Ok(None)
+        }
+    }
+
     pub fn get_draft(transaction: &mut Transaction, notebook_id: u64, created_by: &str)
         -> Result<Option<Self>, mysql::error::Error> {
         let row: Option<Row> = transaction.first_exec(r"

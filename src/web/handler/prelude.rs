@@ -10,6 +10,7 @@ use router::Router;
 use serde::ser::Serialize;
 use serde_json;
 use std;
+use std::fmt;
 use std::str::FromStr;
 
 const UID_HEADER_NAME: &str = "X-Uid";
@@ -78,4 +79,17 @@ pub fn uid(req: &Request) -> String {
         Some(uid) => uid.to_string(),
         None => String::new(),
     }
+}
+
+#[derive(Debug)]
+pub struct StringError(pub String);
+
+impl fmt::Display for StringError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
+}
+
+impl std::error::Error for StringError {
+    fn description(&self) -> &str { &*self.0 }
 }
