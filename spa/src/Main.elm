@@ -6,7 +6,9 @@ import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Navigation exposing (Location)
 import Notebook exposing (createNotebook, decodeNotebook)
-import NotebookHistory exposing (createNotebookHistory, decodeNotebookHistory)
+import NotebookHistory exposing ( getNotebookHistory
+                                , createNotebookHistory
+                                , decodeNotebookHistory )
 import Page exposing (Page(..))
 import Uid exposing (..)
 import UrlParser exposing ((</>))
@@ -66,6 +68,12 @@ update msg model =
                     )
                 Err _ ->
                     error model
+        GetNotebookHistoryResult result ->
+            case result of
+                Ok notebookHistory ->
+                    (Model.updateNotebookHistory model (Just notebookHistory), Cmd.none)
+                Err _ ->
+                    error model
 
 
 urlUpdate : Model -> Navigation.Location -> ( Model, Cmd Msg )
@@ -74,7 +82,8 @@ urlUpdate model location =
         Nothing ->
             ( Model.updatePage model NotFound, Cmd.none )
         Just (EditNotebookHistory notebookId id) ->
-             ( Model.updatePage model (EditNotebookHistory notebookId id), Cmd.none )
+             ( Model.updatePage model (EditNotebookHistory notebookId id)
+             , Http.send GetNotebookHistoryResult (getNotebookHistory notebookId id) )
         Just page ->
             ( Model.updatePage model page, Cmd.none )
 

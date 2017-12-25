@@ -10,3 +10,4 @@ type Msg
     | CreateNotebook
     | CreateNotebookResult (Result Http.Error Int)
     | CreateNotebookHistoryResult (Result Http.Error NotebookHistory.Model)
+    | GetNotebookHistoryResult (Result Http.Error NotebookHistory.Model)

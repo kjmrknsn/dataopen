@@ -17,6 +17,13 @@ new id notebookId =
     }
 
 
+getNotebookHistory: Int -> Int -> Http.Request Model
+getNotebookHistory notebookId id =
+    Http.get
+        ("/web/notebooks/" ++ toString notebookId ++ "/notebook_histories/" ++ toString id)
+        decodeNotebookHistory
+
+
 createNotebookHistory: Int -> Http.Request Model
 createNotebookHistory notebookId =
     Http.post

@@ -21,7 +21,7 @@ new =
 
 updatePage : Model -> Page -> Model
 updatePage model page =
-    { model | page = page }
+    { model | page = page, notebookHistory = Nothing }
 
 
 updateUid : Model -> String -> Model
