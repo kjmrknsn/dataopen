@@ -12,6 +12,7 @@ use serde::ser::Serialize;
 use serde_json;
 use std;
 use std::fmt;
+use std::io::Read;
 use std::str::FromStr;
 
 const UID_HEADER_NAME: &str = "X-Uid";
@@ -89,6 +90,12 @@ pub fn uid(req: &Request) -> String {
         Some(uid) => uid.to_string(),
         None => String::new(),
     }
+}
+
+pub fn body_string(req: &mut Request) -> Result<String, IronError> {
+    let mut v = String::new();
+    result(req.body.read_to_string(&mut v))?;
+    Ok(v)
 }
 
 #[derive(Debug)]
