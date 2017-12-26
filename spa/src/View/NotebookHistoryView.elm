@@ -5,6 +5,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onBlur, onClick, onInput)
 import Model
 import Msg exposing (Msg(..))
+import View.ParagraphView as ParagraphView
 
 
 header : Model.Model -> Html Msg
@@ -37,19 +38,4 @@ footer model =
 
 view : Model.Model -> List(Html Msg)
 view model =
-    [ div
-        [ class "row mt-3" ]
-        [ div
-            [ class "col" ]
-            [ div
-                [ class "card rounded-0" ]
-                [ div
-                    [ class "card-body" ]
-                    [ textarea
-                        []
-                        []
-                    ]
-                ]
-            ]
-        ]
-    ]
+    (List.map (\paragraph -> (ParagraphView.view model) paragraph) model.paragraphs)
