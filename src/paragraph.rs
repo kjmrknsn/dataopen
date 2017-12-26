@@ -1,4 +1,5 @@
 use mysql::{self, Transaction};
+use mysql::prelude::*;
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -53,5 +54,46 @@ impl Paragraph {
             String::new(),
             String::new(),
         ))
+    }
+
+    pub fn list<T>(conn: &mut T, notebook_id: u64, notebook_history_id: u64)
+        -> Result<Vec<Self>, mysql::error::Error>
+        where T: GenericConnection {
+        conn.prep_exec(r"
+            select
+                id
+            ,   notebook_id
+            ,   notebook_history_id
+            ,   code
+            ,   result
+            from
+                paragraph
+            where
+                notebook_id = :notebook_id
+            and notebook_history_id = :notebook_history_id
+            order by
+                id
+        ", params! {
+            "notebook_id" => notebook_id,
+            "notebook_history_id" => notebook_history_id
+        }).map(|result| {
+            result.map(|x| x.unwrap()).map(|row| {
+                let (
+                    id,
+                    notebook_id,
+                    notebook_history_id,
+                    code,
+                    result
+                ) = mysql::from_row(row);
+
+                Self::new(
+                    id,
+                    notebook_id,
+                    notebook_history_id,
+                    code,
+                    result,
+                )
+            }).collect()
+        })
     }
 }
