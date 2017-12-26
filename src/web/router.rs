@@ -35,6 +35,12 @@ pub fn new() -> Router {
     );
 
     router.get(
+        "/web/notebooks/:notebook_id/notebook_histories/:notebook_history_id/paragraphs",
+        handler::paragraph::list,
+        "list_paragraph"
+    );
+
+    router.get(
         "/web/uid",
         handler::uid::get,
         "get_uid"

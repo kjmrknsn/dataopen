@@ -1,7 +1,6 @@
 use iron::prelude::*;
 use iron::status;
 use persistent;
-
 use super::prelude::*;
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook_history::{NotebookHistory, NotebookHistoryTitle};
