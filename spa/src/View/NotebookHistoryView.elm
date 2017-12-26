@@ -45,7 +45,10 @@ view model =
                 [ class "card rounded-0" ]
                 [ div
                     [ class "card-body" ]
-                    []
+                    [ textarea
+                        []
+                        []
+                    ]
                 ]
             ]
         ]
