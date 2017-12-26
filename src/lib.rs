@@ -16,6 +16,7 @@ extern crate toml;
 pub mod log;
 pub mod notebook;
 pub mod notebook_history;
+pub mod paragraph;
 pub mod web;
 
 pub fn str_opt(s: &str) -> Option<&str> {

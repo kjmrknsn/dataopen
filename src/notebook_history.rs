@@ -11,6 +11,7 @@ pub struct NotebookHistory {
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct NotebookHistoryTitle {
     pub title: String,
 }
@@ -94,7 +95,7 @@ impl NotebookHistory {
             )
         ", params! {
             "notebook_id" => notebook_id,
-            "created_by" => str_opt(created_by),
+            "created_by" => str_opt(created_by)
         })?;
 
         Ok(Self::new(query_result.last_insert_id(), notebook_id, String::new()))
