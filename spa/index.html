@@ -22,11 +22,18 @@
 <script>
     var app = Elm.Main.embed(document.querySelector('div'));
 
-    app.ports.setAce.subscribe(function(paragraphId) {
-        setTimeout(function() {
+    function setAce(paragraphId) {
+        try {
             ace.edit('paragraph-' + String(paragraphId));
-        }, 200);
+        } catch (_) {
+            setTimeout(function() {
+                setAce(paragraphId);
+            }, 50)
+        }
+    }
 
+    app.ports.setAce.subscribe(function(paragraphId) {
+        setAce(paragraphId);
     });
 </script>
 </body>
