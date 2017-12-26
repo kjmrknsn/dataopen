@@ -117,4 +117,22 @@ impl NotebookHistory {
 
         Ok(())
     }
+
+    pub fn complete(transaction: &mut Transaction, id: u64, notebook_id: u64)
+        -> Result<(), mysql::error::Error> {
+        transaction.prep_exec(r"
+            update notebook_history
+            set
+                is_completed = true
+            ,   completed_at = current_timestamp
+            where
+                id = :id
+            and notebook_id = :notebook_id
+        ", params! {
+            "id" => id,
+            "notebook_id" => notebook_id
+        })?;
+
+        Ok(())
+    }
 }

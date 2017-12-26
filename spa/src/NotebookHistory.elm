@@ -45,6 +45,19 @@ updateTitle notebookHistory =
             Decode.value
 
 
+complete : Model -> Http.Request Decode.Value
+complete notebookHistory =
+    ExtHttp.patch
+        ( "/web/notebooks/"
+        ++ toString notebookHistory.notebookId
+        ++ "/notebook_histories/"
+        ++ toString notebookHistory.id
+        ++ "/complete"
+        )
+        Http.emptyBody
+        Decode.value
+
+
 getNotebookHistory: Int -> Int -> Http.Request Model
 getNotebookHistory notebookId id =
     Http.get

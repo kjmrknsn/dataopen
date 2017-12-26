@@ -15,7 +15,7 @@ pub fn get(req: &mut Request) -> IronResult<Response> {
     let notebook_history = match result(NotebookHistory::get(
         &mut conn(mysql_pool.as_ref())?,
         id,
-        notebook_id,
+        notebook_id
     ))? {
         Some(notebook_history) => notebook_history,
         None => return Err(IronError::new(
@@ -29,7 +29,7 @@ pub fn get(req: &mut Request) -> IronResult<Response> {
     Ok(Response::with((
         status::Ok,
         content_type(),
-        notebook_history,
+        notebook_history
     )))
 }
 
@@ -44,8 +44,8 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     let notebook_history = result(NotebookHistory::insert(
         &mut transaction,
         notebook_id,
-        &uid)
-    )?;
+        &uid
+    ))?;
 
     let notebook_history = json(&notebook_history)?;
 
@@ -54,7 +54,7 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
     Ok(Response::with((
         status::Ok,
         content_type(),
-        notebook_history,
+        notebook_history
     )))
 }
 
@@ -72,7 +72,7 @@ pub fn patch_title(req: &mut Request) -> IronResult<Response> {
         &mut transaction,
         id,
         notebook_id,
-        &notebook_history_title.title,
+        &notebook_history_title.title
     ))?;
 
     commit(transaction)?;
@@ -80,6 +80,29 @@ pub fn patch_title(req: &mut Request) -> IronResult<Response> {
     Ok(Response::with((
         status::Ok,
         content_type(),
-        "{}",
+        "{}"
+    )))
+}
+
+pub fn complete(req: &mut Request) -> IronResult<Response> {
+    let id = param(&req, "id")?;
+    let notebook_id = param(&req, "notebook_id")?;
+
+    let mysql_pool= req.get::<persistent::Read<MysqlPool>>().unwrap();
+
+    let mut transaction = transaction(mysql_pool.as_ref())?;
+
+    result(NotebookHistory::complete(
+        &mut transaction,
+        id,
+        notebook_id
+    ))?;
+
+    commit(transaction)?;
+
+    Ok(Response::with((
+        status::Ok,
+        content_type(),
+        "{}"
     )))
 }

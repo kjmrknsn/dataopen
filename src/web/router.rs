@@ -28,6 +28,12 @@ pub fn new() -> Router {
         "patch_notebook_history_title"
     );
 
+    router.patch(
+        "/web/notebooks/:notebook_id/notebook_histories/:id/complete",
+        handler::notebook_history::complete,
+        "patch_notebook_history_complete"
+    );
+
     router.get(
         "/web/uid",
         handler::uid::get,

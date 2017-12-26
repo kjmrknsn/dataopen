@@ -2,7 +2,7 @@ module View.NotebookHistoryView exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput, onBlur)
+import Html.Events exposing (onBlur, onClick, onInput)
 import Model
 import Msg exposing (Msg(..))
 
@@ -28,7 +28,9 @@ footer model =
     Html.footer
         [ class "bg-white container-fluid py-2" ]
         [ button
-            [ class "btn btn-success float-right" ]
+            [ class "btn btn-success float-right"
+            , onClick CompleteNotebookHistory
+            ]
             [ text "Save" ]
         ]
 

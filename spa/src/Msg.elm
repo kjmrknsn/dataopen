@@ -16,3 +16,5 @@ type Msg
     | UpdateNotebookHistoryTitleOnLocal String
     | UpdateNotebookHistoryTitle
     | UpdateNotebookHistoryTitleResult (Result Http.Error Decode.Value)
+    | CompleteNotebookHistory
+    | CompleteNotebookHistoryResult (Result Http.Error Decode.Value)

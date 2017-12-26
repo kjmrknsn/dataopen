@@ -8,7 +8,8 @@ import Navigation exposing (Location)
 import Notebook exposing (createNotebook, decodeNotebook)
 import NotebookHistory exposing ( getNotebookHistory
                                 , createNotebookHistory
-                                , decodeNotebookHistory )
+                                , decodeNotebookHistory
+                                )
 import Page exposing (Page(..))
 import Uid exposing (..)
 import UrlParser exposing ((</>))
@@ -84,6 +85,14 @@ update msg model =
             case result of
                 Ok _ ->
                     (model, Cmd.none)
+                Err _ ->
+                    error model
+        CompleteNotebookHistory ->
+            (model, Http.send CompleteNotebookHistoryResult (NotebookHistory.complete model.notebookHistory))
+        CompleteNotebookHistoryResult result ->
+            case result of
+                Ok _ ->
+                    (model, Navigation.load "#")
                 Err _ ->
                     error model
 
