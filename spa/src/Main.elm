@@ -11,6 +11,7 @@ import NotebookHistory exposing ( getNotebookHistory
                                 , decodeNotebookHistory
                                 )
 import Page exposing (Page(..))
+import Paragraph
 import Uid exposing (..)
 import UrlParser exposing ((</>))
 import View.MainContentView as MainContentView
@@ -72,7 +73,7 @@ update msg model =
         GetNotebookHistoryResult result ->
             case result of
                 Ok notebookHistory ->
-                    (Model.updateNotebookHistory model notebookHistory, Cmd.none)
+                    (Model.updateNotebookHistory model notebookHistory, Http.send GetParagraphsResult (Paragraph.getParagraphs notebookHistory.notebookId notebookHistory.id))
                 Err _ ->
                     error model
         UpdateNotebookHistoryTitleOnLocal title ->
@@ -93,6 +94,12 @@ update msg model =
             case result of
                 Ok _ ->
                     (model, Navigation.load "#")
+                Err _ ->
+                    error model
+        GetParagraphsResult result ->
+            case result of
+                Ok paragraphs ->
+                    (Model.updateParagraphs model paragraphs, Cmd.none)
                 Err _ ->
                     error model
 

@@ -4,6 +4,7 @@ import Json.Decode as Decode
 import Http
 import Navigation exposing (Location)
 import NotebookHistory
+import Paragraph
 
 
 type Msg
@@ -18,3 +19,4 @@ type Msg
     | UpdateNotebookHistoryTitleResult (Result Http.Error Decode.Value)
     | CompleteNotebookHistory
     | CompleteNotebookHistoryResult (Result Http.Error Decode.Value)
+    | GetParagraphsResult (Result Http.Error (List Paragraph.Model))
