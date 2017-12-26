@@ -17,3 +17,11 @@ pub mod log;
 pub mod notebook;
 pub mod notebook_history;
 pub mod web;
+
+pub fn str_opt(s: &str) -> Option<&str> {
+    if s.len() == 0 {
+        None
+    } else {
+        Some(s)
+    }
+}

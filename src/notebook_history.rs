@@ -1,5 +1,6 @@
 use mysql::{self, Row, Transaction};
 use mysql::prelude::*;
+use super::str_opt;
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -104,14 +105,14 @@ impl NotebookHistory {
         transaction.prep_exec(r"
             update notebook_history
             set
-                title = :title
+                title = coalesce(:title, '')
             where
                 id = :id
             and notebook_id = :notebook_id
         ", params! {
             "id" => id,
             "notebook_id" => notebook_id,
-            "title" => title,
+            "title" => str_opt(title)
         })?;
 
         Ok(())
