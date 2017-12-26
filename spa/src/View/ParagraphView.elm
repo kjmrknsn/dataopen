@@ -17,11 +17,12 @@ view model paragraph =
             [ div
                 [ class "card rounded-0" ]
                 [ div
-                    [ class "card-body" ]
-                    [ textarea
+                    [ class "card-body"
+                    ]
+                    [ div
                         [ id ("paragraph-" ++ toString paragraph.id)
                         ]
-                        [ text paragraph.code ]
+                        [ text "a" ]
                     ]
                 ]
             ]

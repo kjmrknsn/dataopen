@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Html exposing (..)
 import Http
@@ -99,7 +99,8 @@ update msg model =
         GetParagraphsResult result ->
             case result of
                 Ok paragraphs ->
-                    (Model.updateParagraphs model paragraphs, Cmd.none)
+                    ( Model.updateParagraphs model paragraphs
+                    , Cmd.batch (List.map (\paragraph -> setAce paragraph.id) paragraphs))
                 Err _ ->
                     error model
 
@@ -134,6 +135,9 @@ routeParser =
             )
         , UrlParser.map Error (UrlParser.s "error")
         ]
+
+
+port setAce : Int -> Cmd msg
 
 
 error : Model -> (Model, Cmd Msg)

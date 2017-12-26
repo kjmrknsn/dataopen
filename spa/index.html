@@ -20,7 +20,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" integrity="sha256-U//RSeH3TR3773Rk+1lAufJnRjEaG5LcdbvGV72kHEM=" crossorigin="anonymous"></script>
 <script src="elm.js"></script>
 <script>
-    Elm.Main.embed(document.querySelector('div'));
+    var app = Elm.Main.embed(document.querySelector('div'));
+
+    app.ports.setAce.subscribe(function(paragraphId) {
+        setTimeout(function() {
+            ace.edit('paragraph-' + String(paragraphId));
+        }, 200);
+
+    });
 </script>
 </body>
 </html>
