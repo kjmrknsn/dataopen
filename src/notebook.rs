@@ -1,4 +1,5 @@
 use mysql::{self, Transaction};
+use super::str_opt;
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -19,10 +20,10 @@ impl Notebook {
             insert into notebook (
                 created_by
             ) values (
-                :created_by
+                coalesce(:created_by, '')
             )
         ", params! {
-            "created_by" => &created_by,
+            "created_by" => str_opt(created_by),
         })?;
 
         Ok(Self::new(query_result.last_insert_id()))
