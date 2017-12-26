@@ -5,6 +5,7 @@ use persistent;
 use super::prelude::*;
 use super::super::mysql_pool::MysqlPool;
 use super::super::super::notebook_history::{NotebookHistory, NotebookHistoryTitle};
+use super::super::super::paragraph::Paragraph;
 
 pub fn get(req: &mut Request) -> IronResult<Response> {
     let id = param(&req, "id")?;
@@ -45,6 +46,12 @@ pub fn post(req: &mut Request) -> IronResult<Response> {
         &mut transaction,
         notebook_id,
         &uid
+    ))?;
+
+    result(Paragraph::insert(
+        &mut transaction,
+        notebook_id,
+        notebook_history.id
     ))?;
 
     let notebook_history = json(&notebook_history)?;
