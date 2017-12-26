@@ -23,6 +23,16 @@ header model =
         ]
 
 
+footer : Model.Model -> Html Msg
+footer model =
+    Html.footer
+        [ class "bg-white container-fluid py-2" ]
+        [ button
+            [ class "btn btn-success float-right" ]
+            [ text "Save" ]
+        ]
+
+
 view : Model.Model -> List(Html Msg)
 view model =
     [ div
